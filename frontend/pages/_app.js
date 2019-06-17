@@ -1,6 +1,6 @@
 import React from 'react';
 import App, { Container } from 'next/app'
-import Layout from '../common/components/Layout'
+import Layout from '../common/components/layout'
 
 export default class MyApp extends App {
     constructor(props){
