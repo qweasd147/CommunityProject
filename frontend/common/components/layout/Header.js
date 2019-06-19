@@ -27,7 +27,7 @@ export default ({ handleDrawerOpen, open}) => {
               <MenuIcon />
             </IconButton>
             <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
-              Dashboard
+              Main Title
             </Typography>
             <IconButton color="inherit">
               <Badge badgeContent={4} color="secondary">

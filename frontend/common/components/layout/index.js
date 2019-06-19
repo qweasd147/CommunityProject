@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
+import Container from '@material-ui/core/Container';
 
 import Header from './Header';
 import Left from './Left';
@@ -30,7 +31,9 @@ export default ({children}) => {
         />
         <main className = {classes.content}>
           <div className = {classes.appBarSpacer} />
-            {children}
+            <Container maxWidth="lg" className={classes.container}>
+              {children}
+            </Container>
           <MadeWithLove />
         </main>
       </div>
