@@ -1,76 +1,40 @@
 import React from 'react';
 import Document, { Head, Main, NextScript } from 'next/document';
-import { ServerStyleSheets } from '@material-ui/styles';
 import flush from 'styled-jsx/server';
 
 class MyDocument extends Document {
-  render() {
+  static async getInitialProps (context) {
+    const props = await super.getInitialProps(context)
+    const {req: {locale, localeDataScript}} = context
+    return {
+      ...props,
+      locale,
+      localeDataScript
+    }
+  }
+
+  render () {
+    // Polyfill Intl API for older browsers
+    const polyfill = `https://cdn.polyfill.io/v2/polyfill.min.js?features=Intl.~locale.${this.props.locale}`
+
     return (
-      <html lang="en">
-        <Head>
-          <meta charSet="utf-8" />
-          <meta
-            name="viewport"
-            content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no"
-          />
-          <link
-            rel="stylesheet"
-            href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
-          />
-        </Head>
+      <html>
+        <Head />
+        <meta name='viewport' content='width=device-width, initial-scale=1' />
+        <meta charSet='utf-8' />
         <body>
           <Main />
+          <script src={polyfill} />
+          <script
+            dangerouslySetInnerHTML={{
+              __html: this.props.localeDataScript
+            }}
+          />
           <NextScript />
         </body>
       </html>
-    );
+    )
   }
 }
-
-MyDocument.getInitialProps = async ctx => {
-  // Resolution order
-  //
-  // On the server:
-  // 1. app.getInitialProps
-  // 2. page.getInitialProps
-  // 3. document.getInitialProps
-  // 4. app.render
-  // 5. page.render
-  // 6. document.render
-  //
-  // On the server with error:
-  // 1. document.getInitialProps
-  // 2. app.render
-  // 3. page.render
-  // 4. document.render
-  //
-  // On the client
-  // 1. app.getInitialProps
-  // 2. page.getInitialProps
-  // 3. app.render
-  // 4. page.render
-
-  // Render app and page and get the context of the page with collected side effects.
-  const sheets = new ServerStyleSheets();
-  const originalRenderPage = ctx.renderPage;
-
-  ctx.renderPage = () =>
-    originalRenderPage({
-      enhanceApp: App => props => sheets.collect(<App {...props} />),
-    });
-
-  const initialProps = await Document.getInitialProps(ctx);
-
-  return {
-    ...initialProps,
-    // Styles fragment is rendered after the app and page rendering finish.
-    styles: (
-      <React.Fragment>
-        {sheets.getStyleElement()}
-        {flush() || null}
-      </React.Fragment>
-    ),
-  };
-};
 
 export default MyDocument;

@@ -1,6 +1,7 @@
 import React from 'react';
 import App, { Container } from 'next/app'
 import Layout from '../common/components/layout'
+import 'antd/dist/antd.css';
 
 export default class MyApp extends App {
     constructor(props){
