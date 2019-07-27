@@ -12,8 +12,8 @@
     "@zeit/next-css": "^1.0.1",
     "@zeit/next-less": "^1.0.1",
     "antd": "^3.20.5",
-    "babel-plugin-syntax-dynamic-import": "^6.18.0",
     "css-loader": "^3.1.0",
+    "for-editor": "^0.3.0",
     "less": "^3.9.0",
     "less-loader": "^5.0.0",
     "mobx": "^5.10.1",
@@ -21,10 +21,13 @@
     "mobx-state-tree": "^3.14.0",
     "next": "^9.0.2",
     "react": "^16.8.6",
-    "react-dom": "^16.8.6"
+    "react-dom": "^16.8.6",
+    "react-markdown": "^4.1.0",
+    "react-simplemde-editor": "^4.1.0"
   },
   "devDependencies": {
     "@babel/plugin-proposal-decorators": "^7.4.4",
-    "babel-plugin-import": "^1.12.0"
+    "babel-plugin-import": "^1.12.0",
+    "babel-plugin-syntax-dynamic-import": "^6.18.0"
   }
 }

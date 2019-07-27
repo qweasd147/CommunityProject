@@ -1,6 +1,42 @@
 import React from 'react';
 import { Layout, Menu, Icon } from 'antd';
+import Router from 'next/router';
+
 const { Sider } = Layout;
+
+const data = [
+    {
+        icon : "user"
+        , router : "/"
+        , text : "home"
+    }
+    , {
+        icon : "video-camera"
+        , router : "/articles/type1"
+        , text : "type1"
+    }
+    , {
+        icon : "upload"
+        , router : "/articles/write"
+        , text : "write"
+    }
+    , {
+        icon : "user"
+        , router : "/articles/show"
+        , text : "show"
+    }
+];
+
+const mapToComponents = (data) => {
+    return data.map(({ router, icon, text }, i) => {
+        return (
+           <Menu.Item key={i+1} onClick={()=>Router.push(router)}>
+                <Icon type={icon} />
+                <span className="nav-text">{text}</span>
+            </Menu.Item>
+        );
+    });
+};
 
 export default (props) => {
     return (
@@ -16,22 +52,7 @@ export default (props) => {
         >
             <div className="logo" />
             <Menu theme="dark" mode="inline" defaultSelectedKeys={['4']}>
-            <Menu.Item key="1">
-                <Icon type="user" />
-                <span className="nav-text">nav 1</span>
-            </Menu.Item>
-            <Menu.Item key="2">
-                <Icon type="video-camera" />
-                <span className="nav-text">nav 2</span>
-            </Menu.Item>
-            <Menu.Item key="3">
-                <Icon type="upload" />
-                <span className="nav-text">nav 3</span>
-            </Menu.Item>
-            <Menu.Item key="4">
-                <Icon type="user" />
-                <span className="nav-text">nav 4</span>
-            </Menu.Item>
+                {mapToComponents(data)}
             </Menu>
         </Sider>
     );
