@@ -10,6 +10,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -19,6 +20,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
+@DynamicUpdate
 public class Article {
 
     @Id
@@ -51,11 +53,42 @@ public class Article {
     private WriteInfo<String> writeInfo;
 
     @Builder
-    public Article(@NotNull String subject, @NotNull String contents, int hits, CommonState state, List<Tag> tags) {
+    public Article(@NotNull String subject, @NotNull String contents
+            , ArticleType articleType, int hits
+            , CommonState state) {
+
         this.subject = subject;
         this.contents = contents;
+        this.articleType = articleType;
         this.hits = hits;
         this.state = state;
-        this.tags = tags;
+
+        this.tags = new ArrayList<>();
+    }
+    
+    public void addTag(String tagVal){
+
+        Tag tag = Tag.builder()
+                .tag(tagVal)
+                .article(this)
+                .build();
+
+        this.tags.add(tag);
+    }
+
+    public void updateSubject(String subject){
+        this.subject = subject;
+    }
+
+    public void updateContents(String contents){
+        this.contents = contents;
+    }
+
+    public void changeState(CommonState state){
+        this.state = state;
+    }
+
+    public void delete(){
+        this.changeState(CommonState.DELETE);
     }
 }

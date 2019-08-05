@@ -14,9 +14,9 @@ public enum ArticleType implements EnumCodeType {
     TYPE1(0, "type1");
 
     private int articleCode;
-    private String desc;
+    private String name;
 
-    public ArticleType findByCode(int articleCode){
+    public static ArticleType findByCode(int articleCode){
         return Arrays.stream(ArticleType.values())
                 .filter(articleType -> articleType.getCode() == articleCode)
                 .findFirst()
@@ -30,6 +30,6 @@ public enum ArticleType implements EnumCodeType {
 
     @Override
     public String getDescription() {
-        return this.desc;
+        return this.name;
     }
 }
