@@ -1,19 +1,28 @@
 package com.joo.contents.articles;
 
+import com.joo.common.domain.WriteInfo;
+import com.joo.common.dto.WriteInfoDto;
 import com.joo.common.state.CommonState;
+import com.joo.common.state.converter.CommonStateConverterImpl;
 import com.joo.contents.articles.domain.Article;
+import com.joo.contents.articles.domain.Tag;
 import com.joo.contents.articles.type.ArticleType;
+import com.joo.contents.articles.type.ArticleTypeConverter;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.BatchSize;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.util.StringUtils;
 
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class ArticleDto {
 
@@ -87,6 +96,10 @@ public class ArticleDto {
             this.code = code;
         }
 
+        public ArticleType getArticleType(){
+            return ArticleType.findByCode(this.code);
+        }
+
         public Set<String> findTagFromContents(){
             return findTags(this.contents);
         }
@@ -117,6 +130,44 @@ public class ArticleDto {
             PageRequest pageable = PageRequest.of(this.page, this.size, sort);
 
             return PageRequest.of(this.page, this.size, sort);
+        }
+    }
+
+    @Getter
+    @NoArgsConstructor
+    public static class Res {
+
+        private Long idx;
+        private String subject;
+        private String contents;
+        private int hits;
+        private Set<String> tags = new LinkedHashSet<>();
+        private WriteInfoDto writeInfo;
+
+        @Builder
+        public Res(Long idx, String subject, String contents, int hits, Set<String> tags, WriteInfoDto writeInfo) {
+            this.idx = idx;
+            this.subject = subject;
+            this.contents = contents;
+            this.hits = hits;
+            this.tags = tags;
+            this.writeInfo = writeInfo;
+        }
+
+        public static Res of(Article article){
+
+            LinkedHashSet<String> setTags = article.getTags().stream()
+                    .map(tag -> tag.getTag())
+                    .collect(Collectors.toCollection(LinkedHashSet::new));
+
+            return Res.builder()
+                    .idx(article.getIdx())
+                    .subject(article.getSubject())
+                    .contents(article.getContents())
+                    .hits(article.getHits())
+                    .tags(setTags)
+                    .writeInfo(WriteInfoDto.of(article.getWriteInfo()))
+                    .build();
         }
     }
 }

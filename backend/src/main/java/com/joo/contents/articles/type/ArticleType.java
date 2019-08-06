@@ -11,7 +11,7 @@ import java.util.NoSuchElementException;
 @AllArgsConstructor
 public enum ArticleType implements EnumCodeType {
 
-    TYPE1(0, "type1");
+    type1(0, "type1");
 
     private int articleCode;
     private String name;

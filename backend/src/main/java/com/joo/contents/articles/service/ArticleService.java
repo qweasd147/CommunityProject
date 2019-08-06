@@ -4,6 +4,7 @@ import com.joo.common.state.CommonState;
 import com.joo.contents.articles.ArticleDto;
 import com.joo.contents.articles.domain.Article;
 import com.joo.contents.articles.repository.ArticleRepository;
+import com.joo.contents.articles.type.ArticleType;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -25,16 +26,16 @@ public class ArticleService {
         return articleRepository.save(createReq.toEntity());
     }
 
-    public Page<Article> findAllByDto(ArticleDto.ListReq listReq){
+    public Page<Article> findAllByDto(ArticleDto.ListReq listReq, ArticleType articleType){
 
         Pageable pageable = listReq.toPageable();
 
-        return articleRepository.findAllByState(pageable, CommonState.ENABLE);
+        return articleRepository.findAllByArticleTypeAndState(pageable, articleType, CommonState.ENABLE);
     }
 
     public Article update(Long articleIdx, ArticleDto.UpdateReq updateReq){
 
-        Article article = articleRepository.findByIdxAndState(articleIdx, CommonState.ENABLE)
+        Article article = articleRepository.findByIdxAndArticleTypeAndState(articleIdx, updateReq.getArticleType(), CommonState.ENABLE)
                 .orElseThrow(() -> new NoSuchElementException("찾을 수 없는 게시물. " + articleIdx));
 
         article.updateSubject(updateReq.getSubject());
@@ -48,14 +49,14 @@ public class ArticleService {
         return article;
     }
 
-    public Article findOne(Long articleIdx){
+    public Article findOne(Long articleIdx, ArticleType articleType){
 
-        return articleRepository.findByIdxAndState(articleIdx, CommonState.ENABLE)
+        return articleRepository.findByIdxAndArticleTypeAndState(articleIdx, articleType, CommonState.ENABLE)
                 .orElseThrow(() -> new NoSuchElementException("찾을 수 없는 게시물. " + articleIdx));
     }
 
-    public void delete(Long articleIdx){
-        Article article = articleRepository.findByIdxAndState(articleIdx, CommonState.ENABLE)
+    public void delete(Long articleIdx, ArticleType articleType){
+        Article article = articleRepository.findByIdxAndArticleTypeAndState(articleIdx, articleType, CommonState.ENABLE)
                 .orElseThrow(() -> new NoSuchElementException("찾을 수 없는 게시물. " + articleIdx));
 
         article.delete();
