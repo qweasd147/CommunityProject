@@ -57,7 +57,7 @@ public class ArticleDto {
         private int code;
 
         @Builder
-        public CreateReq(String subject, String contents, int type) {
+        public CreateReq(String subject, String contents, int code) {
             this.subject = subject;
             this.contents = contents;
             this.code = code;

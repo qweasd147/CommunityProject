@@ -49,7 +49,7 @@ public class ArticleController {
 
     @PostMapping("/{type}/article")
     @ResponseStatus(value = HttpStatus.CREATED)
-    public ArticleDto.Res createArticleOne(ArticleDto.CreateReq createReq, @PathVariable ArticleType type){
+    public ArticleDto.Res createArticleOne(@RequestBody ArticleDto.CreateReq createReq, @PathVariable ArticleType type){
 
         Article article = articleService.create(createReq);
 

@@ -36,6 +36,7 @@ dependencies {
     compile("com.querydsl:querydsl-apt")
 
     compile('org.springframework.boot:spring-boot-starter-web')
+    compile group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '2.4.1'
 
     //elastic search
     implementation 'org.springframework.boot:spring-boot-starter-data-elasticsearch'

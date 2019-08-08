@@ -1,1 +1,38 @@
+#port
+#server:
+#  port: 80
 
+# mariaDB
+spring:
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://localhost:3306/joo
+    username: joohyung
+    password: joo123
+    #test-whileIdle: true
+    #validationQuery: select 1
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: true
+  devtools:
+    livereload:
+      enabled: true
+      #jackson:
+      #serialization:
+      #write_dates_as_timestamps: false  #json localdatetime format
+
+#log4j
+logging:
+  level:
+    #com.joo.web.controller.common.ControllerExceptionHandler: DEBUG
+    #org.springframework.web.servlet: DEBUG
+    #org.springframework.web.client.RestTemplate: TRACE
+    #org.springframework.web: DEBUG
+    org.springframework.jdbc.datasource: DEBUG
+    #org.hibernate.type: trace
+    org.springframework.boot.autoconfigure.security.oauth2.resource.UserInfoTokenServices: DEBUG
+    #org.springframework.security.web: DEBUG
