@@ -1,5 +1,6 @@
 package com.joo.common.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.joo.common.domain.WriteInfo;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,8 +13,10 @@ import java.time.LocalDateTime;
 public class WriteInfoDto {
 
     private String createdBy;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime createdDate;
     private String lastModifiedBy;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime lastModifiedDate;
 
     @Builder

@@ -6,6 +6,7 @@ import com.joo.contents.articles.service.ArticleService;
 import com.joo.contents.articles.type.ArticleType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,11 +22,17 @@ public class ArticleController {
     private final ArticleService articleService;
 
 
-    @GetMapping("/{type}/article")
+    @GetMapping("/{articleType}/article")
     @ResponseStatus(value = HttpStatus.OK)
-    public Map<String, Object> searchArticleList(ArticleDto.ListReq listReq, @PathVariable ArticleType type){
+    public Map<String, Object> searchArticleList(ArticleDto.ListReq listReq, @PathVariable ArticleType articleType, Pageable pageable){
 
-        Page<ArticleDto.Res> resPage = articleService.findAllByDto(listReq, type)
+        //TODO : 어떻게 자동으로 처리할껀지
+        ArticleDto.ListReq newListReq = listReq.toBuilder()
+                .pageable(pageable)
+                .articleType(articleType)
+                .build();
+
+        Page<ArticleDto.Res> resPage = articleService.findAllByDto(newListReq)
                 .map(ArticleDto.Res::of);
 
         Map<String, Object> listData = new HashMap<>();

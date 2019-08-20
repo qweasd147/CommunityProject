@@ -11,6 +11,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -20,7 +21,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-@DynamicUpdate
+@EntityListeners(AuditingEntityListener.class)
 public class Article {
 
     @Id
@@ -50,7 +51,7 @@ public class Article {
     private List<Tag> tags = new ArrayList<>();
 
     @Embedded
-    private WriteInfo<String> writeInfo;
+    private WriteInfo<String> writeInfo = new WriteInfo<>();
 
     @Builder
     public Article(@NotNull String subject, @NotNull String contents
@@ -65,8 +66,8 @@ public class Article {
 
         this.tags = new ArrayList<>();
     }
-    
-    public void addTag(String tagVal){
+
+    public void addTag(String tagVal) {
 
         Tag tag = Tag.builder()
                 .tag(tagVal)
@@ -76,19 +77,19 @@ public class Article {
         this.tags.add(tag);
     }
 
-    public void updateSubject(String subject){
+    public void updateSubject(String subject) {
         this.subject = subject;
     }
 
-    public void updateContents(String contents){
+    public void updateContents(String contents) {
         this.contents = contents;
     }
 
-    public void changeState(CommonState state){
+    public void changeState(CommonState state) {
         this.state = state;
     }
 
-    public void delete(){
+    public void delete() {
         this.changeState(CommonState.DELETE);
     }
 }

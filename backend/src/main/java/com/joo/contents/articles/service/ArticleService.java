@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.NoSuchElementException;
 import java.util.Set;
@@ -18,6 +19,7 @@ import java.util.Set;
 @Service
 @Slf4j
 @AllArgsConstructor
+@Transactional
 public class ArticleService {
 
     private ArticleRepository articleRepository;
@@ -26,11 +28,11 @@ public class ArticleService {
         return articleRepository.save(createReq.toEntity());
     }
 
-    public Page<Article> findAllByDto(ArticleDto.ListReq listReq, ArticleType articleType){
+    public Page<Article> findAllByDto(ArticleDto.ListReq listReq){
 
         Pageable pageable = listReq.toPageable();
 
-        return articleRepository.findAllByArticleTypeAndState(pageable, articleType, CommonState.ENABLE);
+        return articleRepository.findAllByArticleTypeAndState(pageable, listReq.getArticleType(), CommonState.ENABLE);
     }
 
     public Article update(Long articleIdx, ArticleDto.UpdateReq updateReq){

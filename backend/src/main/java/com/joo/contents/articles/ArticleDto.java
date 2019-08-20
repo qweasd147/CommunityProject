@@ -112,24 +112,30 @@ public class ArticleDto {
         private int size;
         private int page;
         private String desc;
+        private Pageable pageable;
+        private ArticleType articleType;
 
-        @Builder
-        public ListReq(int size, int page, String desc) {
+        @Builder(toBuilder = true)
+        public ListReq(int size, int page, String desc, Pageable pageable, ArticleType articleType) {
             this.size = size;
             this.page = page;
             this.desc = desc;
+            this.pageable = pageable;
+            this.articleType = articleType;
         }
 
         public Pageable toPageable(){
 
+            /*
+            TODO : 어떻게 만들어 낼지
             List<Sort.Order> orders = new LinkedList<>();
             orders.add(new Sort.Order(Sort.Direction.DESC, "idx"));
 
             Sort sort = Sort.by(orders);
 
-            PageRequest pageable = PageRequest.of(this.page, this.size, sort);
-
             return PageRequest.of(this.page, this.size, sort);
+            */
+            return pageable;
         }
     }
 
