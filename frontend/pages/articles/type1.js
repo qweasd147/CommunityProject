@@ -1,48 +1,28 @@
-import { Table } from 'antd';
+import React from 'react'
+import { Provider } from 'mobx-react'
+import { getSnapshot } from 'mobx-state-tree'
+import initArticleStore from '../../stores/article/MainArticleStore'
+import MainArticle from '../../container/article/MainArticle'
 
-const columns = [
-  { title: 'Name', dataIndex: 'name', key: 'name' },
-  { title: 'Age', dataIndex: 'age', key: 'age' },
-  { title: 'Address', dataIndex: 'address', key: 'address' },
-  {
-    title: 'Action',
-    dataIndex: '',
-    key: 'x',
-    render: () => <a href="javascript:;">Delete</a>,
-  },
-];
-
-const data = [
-  {
-    key: 1,
-    name: 'John Brown',
-    age: 32,
-    address: 'New York No. 1 Lake Park',
-    description: 'My name is John Brown, I am 32 years old, living in New York No. 1 Lake Park.',
-  },
-  {
-    key: 2,
-    name: 'Jim Green',
-    age: 42,
-    address: 'London No. 1 Lake Park',
-    description: 'My name is Jim Green, I am 42 years old, living in London No. 1 Lake Park.',
-  },
-  {
-    key: 3,
-    name: 'Joe Black',
-    age: 32,
-    address: 'Sidney No. 1 Lake Park',
-    description: 'My name is Joe Black, I am 32 years old, living in Sidney No. 1 Lake Park.',
-  },
-];
-
-export default ()=>{
-    return (
-        <Table
-            columns={columns}
-            expandedRowRender={record => <p style={{ margin: 0 }}>{record.description}</p>}
-            dataSource={data}
-        />
-    );
+class ArticlePage extends React.Component {
+  static getInitialProps({ req }) {
+    const isServer = !!req
+    const articleStore = initArticleStore(isServer)
+    return { initialState: getSnapshot(articleStore), isServer }
   }
-  
+
+  constructor(props) {
+    super(props)
+    this.state = {articleStore: initArticleStore(props.isServer, props.initialState)}
+  }
+
+  render() {
+    return (
+      <Provider articleStore = {this.state.articleStore}>
+          <MainArticle />
+      </Provider>
+    )
+  }
+}
+
+export default ArticlePage;

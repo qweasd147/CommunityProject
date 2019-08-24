@@ -1,7 +1,5 @@
 {
-  "presets": [
-    "next/babel"
-  ],
+  "presets": ["next/babel"],
   "plugins": [
     [
       "@babel/plugin-proposal-decorators",
@@ -15,6 +13,7 @@
         "libraryName": "antd",
         "style": true
       }
-    ]
+    ],
+    ["lodash"]
   ]
 }
