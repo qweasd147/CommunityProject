@@ -6,8 +6,8 @@ const Article = types
   .model({
     idx : types.optional(types.number, -1)
     , subject : types.optional(types.string, '')
-    , content : types.optional(types.string, '')
-    , hit : types.optional(types.number, 0)
+    , contents : types.optional(types.string, '')
+    , hits : types.optional(types.number, 0)
     //, writer : types.string
     , loadState : types.optional(types.string, 'ready')
   })
@@ -58,7 +58,10 @@ const Article = types
 
 const Articles = types.model({
     list: types.array(Article)
+    , isLast : false
+    , count : 0
     , loadState : types.optional(types.string, 'ready')
+    , one :  types.optional(Article, {})
 }).actions((self) => ({
     findAll: flow(function* fetchData(params) {
 
@@ -69,6 +72,20 @@ const Articles = types.model({
             self.articles = data.data.listData;
             self.isLast = data.data.isLast;
             self.count = data.data.count;
+
+            self.loadState = 'success';
+        } catch (error) {
+            console.error(error)
+            self.loadState = 'fail';
+        }
+    })
+    , findOne: flow(function* fetchData(articleIdx) {
+
+        self.loadState = 'ready';
+        try {
+            const data = yield articleRepository.findOne(articleIdx);
+
+            self.one = data.data;
 
             self.loadState = 'success';
         } catch (error) {

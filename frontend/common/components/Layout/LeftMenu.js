@@ -12,8 +12,8 @@ const data = [
     }
     , {
         icon : "video-camera"
-        , router : "/articles/type1"
-        , text : "type1"
+        , router : "/articles/main"
+        , text : "MainArticle"
     }
     , {
         icon : "upload"

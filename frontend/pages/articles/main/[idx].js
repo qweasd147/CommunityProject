@@ -1,10 +1,10 @@
 import React from 'react'
 import { Provider } from 'mobx-react'
 import { getSnapshot } from 'mobx-state-tree'
-import initArticleStore from '../../stores/article/MainArticleStore'
-import MainArticle from '../../container/article/MainArticles'
+import initArticleStore from '../../../stores/article/MainArticleStore'
+import MainArticle from '../../../container/article/MainArticle'
 
-class ArticlePage extends React.Component {
+class ArticlesPage extends React.Component {
   static getInitialProps({ req }) {
     const isServer = !!req
     const articleStore = initArticleStore(isServer)
@@ -25,4 +25,4 @@ class ArticlePage extends React.Component {
   }
 }
 
-export default ArticlePage;
+export default ArticlesPage;
