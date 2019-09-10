@@ -12,6 +12,12 @@ class MainArticleContainer extends React.Component {
     
     this.props.articleStore.findOne(query.idx);
   }
+
+  delete(){
+    const { query } = this.props.router;
+
+    this.props.articleStore.deleteOne(query.idx);
+  }
   
   render() {
     return (

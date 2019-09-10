@@ -12,12 +12,12 @@ const Article = types
     , loadState : types.optional(types.string, 'ready')
   })
   .actions((self) => ({
-    fetch: flow(function* fetchData(boardIdx) {
+    fetch: flow(function* fetchData(articleIdx) {
 
         self.loadState = 'ready';
 
         try {
-            const data = yield articleRepository.findOne(boardIdx).data;
+            const data = yield articleRepository.findOne(articleIdx).data;
 
             self = { ...data, loadState:'success' };
         } catch (error) {
@@ -25,12 +25,12 @@ const Article = types
             self.loadState = 'fail';
         }
     })
-    , modifyOne: flow(function* fetchData(boardIdx, params) {
+    , modifyOne: flow(function* fetchData(articleIdx, params) {
 
         self.loadState = 'ready';
 
         try {
-            const data = yield articleRepository.modifyOne(boardIdx, params).data;
+            const data = yield articleRepository.modifyOne(articleIdx, params).data;
             //TODO : spread
             self = { ...data, loadState:'success' };
         } catch (error) {
@@ -38,12 +38,12 @@ const Article = types
             self.loadState = 'fail';
         }
     })
-    , deleteOne: flow(function* fetchData(boardIdx, params) {
+    , deleteOne: flow(function* fetchData(articleIdx) {
 
         self.loadState = 'ready';
 
         try {
-            const data = yield articleRepository.deleteOne(boardIdx);
+            const data = yield articleRepository.deleteOne(articleIdx);
 
             destroy(self);
 
